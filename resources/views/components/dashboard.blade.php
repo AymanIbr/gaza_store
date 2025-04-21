@@ -9,16 +9,23 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+
     <title>{{ $title ?? 'Main Dashboard' }} - {{ config('app.name') }}</title>
+
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
+
     <!-- Custom styles for this template-->
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
 
     @stack('css')
 
@@ -64,7 +71,6 @@
     </style>
 
     @if (App::getLocale() == 'ar')
-
         <style>
             body {
                 direction: rtl;
@@ -80,6 +86,7 @@
                 right: unset;
                 left: 0;
             }
+
             .sidebar {
                 padding: 0;
             }
@@ -87,10 +94,13 @@
             .sidebar .nav-item .nav-link {
                 text-align: right;
             }
+
             .sidebar .nav-item .nav-link[data-toggle=collapse]::after {
                 float: left;
             }
-            .ml-auto, .mx-auto {
+
+            .ml-auto,
+            .mx-auto {
                 margin-left: unset !important;
                 margin-right: auto !important;
             }
@@ -99,7 +109,6 @@
                 text-align: right;
             }
         </style>
-
     @endif
 
 </head>
@@ -173,17 +182,18 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <i class="fas fa-globe"></i> {{ __('dashboard.langs') }}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <i class="fas fa-globe"></i>
+                                    {{ __('admin.langs') }}</span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-
-                                <a class="dropdown-item"rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    {{ $properties['native'] }}
-                                </a>
+                                @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                    <a class="dropdown-item"rel="alternate" hreflang="{{ $localeCode }}"
+                                        href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        {{ $properties['native'] }}
+                                    </a>
                                 @endforeach
 
                             </div>
@@ -358,6 +368,13 @@
     </script>
 
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -368,7 +385,10 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
     @stack('js')
+
 
 
 </body>
