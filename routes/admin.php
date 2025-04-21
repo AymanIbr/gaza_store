@@ -7,7 +7,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 
-Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
+Route::middleware('auth','is_admin','verified')->prefix(LaravelLocalization::setLocale())->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
