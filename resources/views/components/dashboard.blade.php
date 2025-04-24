@@ -30,6 +30,10 @@
     @stack('css')
 
     <style>
+        .img-profile {
+            object-fit: cover;
+        }
+
         .colors {
             width: 100px;
             position: fixed;
@@ -75,6 +79,14 @@
             body {
                 direction: rtl;
                 text-align: center;
+            }
+
+            .topbar .dropdown .dropdown-menu {
+                right: -60%;
+            }
+
+            .dropdown-toggle span {
+                margin-left: 10px;
             }
 
             .colors {
@@ -259,14 +271,23 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ asset('assets/img/undraw_profile.svg') }}">
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                                @php
+                                    //https://ui-avatars.com/
+                                    if (Auth::user()->image) {
+                                        $url = asset('storage/' . Auth::user()->image->path);
+                                    } else {
+                                        $url =
+                                            'https://ui-avatars.com/api/?background=random&name=' . Auth::user()->name;
+                                    }
+                                @endphp
+                                <img class="img-profile rounded-circle" src="{{ $url }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -279,11 +300,19 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
+
+                                <a onclick="event.preventDefault();document.querySelector('#logout-form').submit()"
+                                    class="dropdown-item" href="{{ route('logout') }}">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
+                                <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                                    @csrf
+                                </form>
+                                {{-- <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> {{ __('admin.out') }}</button>
+                                </form> --}}
                             </div>
                         </li>
 
@@ -370,9 +399,9 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
 
 
     <!-- Bootstrap core JavaScript-->

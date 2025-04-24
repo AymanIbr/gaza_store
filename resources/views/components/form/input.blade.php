@@ -5,9 +5,16 @@
     <label for="{{ $name }}" class="form-label">{{ $label }}</label>
 @endif
 
+@php
+    $inputClass = 'form-control';
+    if ($errors->has($name)) {
+        $inputClass .= ' is-invalid';
+    }
+@endphp
 
-<input type="{{ $type }}" class="form-control" @error($name) is-invalid @enderror id="{{ $name }}"
-    name="{{ $name }}" placeholder="{{ $placeholder }}" {{ $attributes }} value="{{ old($name, $oldval) }}">
+
+<input type="{{ $type }}" id="{{ $name }}"
+    name="{{ $name }}" placeholder="{{ $placeholder }}" {{ $attributes->merge(['class' => $inputClass]) }} value="{{ old($name, $oldval) }}">
 
 
 @error($name)

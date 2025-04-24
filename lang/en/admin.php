@@ -16,6 +16,8 @@ return [
     'payments' => 'Payments',
     'customers' => 'Customers',
     'add_new' => 'Add New',
-    'langs' => 'Languages'
+    'langs' => 'Languages',
+
+    'out' => 'Logout'
 
 ];
