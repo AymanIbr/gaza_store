@@ -48,17 +48,17 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item ">
+        <li class="nav-item {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoProducts"
                 aria-expanded="true" aria-controls="collapseTwoProducts">
                 <i class="fas fa-fw fa-heart"></i>
                 <span>{{ __('admin.products') }}</span>
             </a>
-            <div id="collapseTwoProducts" class="collapse" aria-labelledby="headingTwo"
+            <div id="collapseTwoProducts" class="collapse {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'show' : '' }} " aria-labelledby="headingTwo"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item " href="">{{ __('admin.products') }}</a>
-                    <a class="collapse-item  " href="">{{ __('admin.add_new') }}</a>
+                    <a class="collapse-item {{ request()->routeIs('admin.products.index') ? 'active' : '' }}" href="{{ route('admin.products.index') }}">{{ __('admin.products') }}</a>
+                    <a class="collapse-item  {{ request()->routeIs('admin.products.create') ? 'active' : '' }}" href="{{ route('admin.products.create') }}">{{ __('admin.add_new') }}</a>
                 </div>
             </div>
         </li>

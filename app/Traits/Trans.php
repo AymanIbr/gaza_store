@@ -15,7 +15,7 @@ trait Trans
         return json_decode($this->name, true)["en"] ?? "";
     }
 
-    public function getNameArEnAttribute()
+    public function getNameArAttribute()
     {
         return json_decode($this->name, true)["ar"] ?? "";
     }
@@ -25,7 +25,7 @@ trait Trans
 
     public function getTransDescriptionAttribute()
     {
-        return json_decode($this->description, true)[app()->getLocale()];
+        return json_decode($this->description, true)[app()->getLocale()] ?? '';
     }
 
     public function getDescriptionEnAttribute()

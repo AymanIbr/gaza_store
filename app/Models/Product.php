@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\Trans;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //
+    use Trans;
 
     protected $guarded = [];
 
@@ -35,5 +36,15 @@ class Product extends Model
     function order_details()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+
+    public function getImagePathAttribute()
+    {
+        $url = asset('assets/img/100x80.svg');
+        if($this->image){
+            $url = asset('storage/'.$this->image->path);
+        }
+        return $url;
     }
 }

@@ -37,7 +37,7 @@
                     </td>
                     <td>{{ $category->trans_name }}</td>
                     <td>{{ $category->trans_description }}</td>
-                    <td> product_count </td>
+                    <td>{{ $category->products()->count() }}</td>
                     <td>{{ $category->created_at->diffForHumans() }}</td>
                     <td>{{ $category->updated_at->diffForHumans() }}</td>
                     <td>

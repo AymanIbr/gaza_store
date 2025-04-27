@@ -27,7 +27,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'image' => 'nullable|image|mimes:png,jpg,svg,jpeg',
-            'current_password' => ['required_with:password', 'current_password'],
+            'current_password' => ['nullable', 'required_with:password', 'current_password'],
             'password' => ['nullable', 'confirmed', 'min:8'],
         ]);
 
@@ -40,7 +40,7 @@ class AdminController extends Controller
             'name' => $request->name
         ];
 
-        if($request->has('password')){
+        if ($request->has('password')) {
             $data['password'] = Hash::make($request->password);
         }
 
