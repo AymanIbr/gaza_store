@@ -9,7 +9,6 @@
 <input type="file" class="form-control @error($name) is-invalid @enderror" id="{{ $name }}"
     name="{{ $name }}" {{ $attributes }}>
 
-
 @if ($oldimage)
     <div class="position-relative d-inline-block">
         @if ($can_delete)
@@ -42,6 +41,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: ease all .3s;
+        }
+
+        .position-relative:hover #del_site_image {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 @endpush

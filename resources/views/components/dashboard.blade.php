@@ -291,7 +291,7 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('admin.settings') }}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
@@ -337,7 +337,8 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; {{ config('app.name') }} {{ date('Y') }}</span>
+                        {{-- <span>Copyright &copy; {{ config('app.name') }} {{ date('Y') }}</span> --}}
+                        <span>{{ getSettings('copyright') }} - {{ date('Y') }}</span>
                     </div>
                 </div>
             </footer>

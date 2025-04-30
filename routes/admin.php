@@ -14,6 +14,11 @@ Route::middleware('auth', 'is_admin', 'verified')->prefix(LaravelLocalization::s
 
         Route::get('/', [AdminController::class, 'index'])->name('index');
 
+
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+        Route::put('/settings', [AdminController::class, 'settings_save']);
+        Route::get('/delete-site-logo', [AdminController::class, 'delete_logo']);
+
         // Profile
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::put('/profile', [AdminController::class, 'profile_save']);

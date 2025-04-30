@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
@@ -64,5 +67,40 @@ class AdminController extends Controller
     function check_password(Request $request)
     {
         return Hash::check($request->password, Auth::user()->password);
+    }
+
+
+    // Settings
+
+    function settings()
+    {
+        $settings = Setting::pluck('value','key')->toArray();
+        return view('dashboard.settings',compact('settings'));
+    }
+
+    function settings_save(Request $request)
+    {
+        $data = $request->except('_token', '_method', 'site_logo');
+        if ($request->hasFile('site_logo')) {
+            $data['site_logo'] = $request->file('site_logo')->store('uploads', 'custom');
+        }
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate([
+                'key' => $key
+            ], [
+                'value' => $value
+            ]);
+        }
+        flash()->success('Settings saved successfully');
+        return redirect()->back();
+    }
+
+    function delete_logo()
+    {
+        Artisan::call('cache:clear');
+        Setting::where('key','site_logo')->update([
+            'value' => null
+        ]);
     }
 }

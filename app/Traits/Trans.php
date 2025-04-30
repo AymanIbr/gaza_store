@@ -8,7 +8,7 @@ trait Trans
 
     public function getTransNameAttribute()
     {
-        return json_decode($this->name, true)[app()->getLocale()];
+        return json_decode($this->name, true)[app()->getLocale()] ?? "";
     }
     public function getNameEnAttribute()
     {
