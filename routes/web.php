@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -27,6 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Magic Method 
+// test notification
+Route::get('/send', [NotificationController::class, 'send']);
+
+
+
+// Magic Method
 
 require __DIR__.'/auth.php';

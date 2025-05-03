@@ -74,8 +74,8 @@ class AdminController extends Controller
 
     function settings()
     {
-        $settings = Setting::pluck('value','key')->toArray();
-        return view('dashboard.settings',compact('settings'));
+        $settings = Setting::pluck('value', 'key')->toArray();
+        return view('dashboard.settings', compact('settings'));
     }
 
     function settings_save(Request $request)
@@ -99,8 +99,26 @@ class AdminController extends Controller
     function delete_logo()
     {
         Artisan::call('cache:clear');
-        Setting::where('key','site_logo')->update([
+        Setting::where('key', 'site_logo')->update([
             'value' => null
         ]);
+    }
+
+
+    // Notification
+
+    function orders()
+    {
+        if (request()->has('id')) {
+            $id = request()->id;
+            Auth::user()->notifications->find($id)->MarkAsRead();
+        }
+        return 'order';
+    }
+
+    function notifications()
+    {
+        Auth::user()->notifications->markAsRead();
+        return view('dashboard.notifications');
     }
 }

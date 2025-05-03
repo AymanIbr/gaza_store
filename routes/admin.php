@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -29,5 +30,10 @@ Route::middleware('auth', 'is_admin', 'verified')->prefix(LaravelLocalization::s
         Route::resource('products', ProductController::class);
 
         Route::get('/delete-image/{id?}',[ProductController::class, 'delete_img'])->name('delete_img');
+
+        Route::get('/orders',[AdminController::class, 'orders'])->name('orders');
+        Route::get('/notifications',[AdminController::class, 'notifications'])->name('notifications');
+
+
     });
 });
