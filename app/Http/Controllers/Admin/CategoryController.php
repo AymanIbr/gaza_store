@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('id', $request->order ?? 'DESC')->when(
+        $categories = Category::withCount('products')->orderBy('id', $request->order ?? 'DESC')->when(
             $request->search,
             function (Builder $query) use ($request) {
                 $query->where('name', 'like', '%' . $request->search . '%');

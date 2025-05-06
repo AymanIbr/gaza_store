@@ -137,7 +137,9 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ]);
         if ($request->hasFile('image')) {
-            File::delete('storage/' . $product->image->path);
+            if ($product->image) {
+                File::delete('storage/' . $product->image->path);
+            }
             $product->image()->delete();
             $path = $request->file('image')->store('uploads', 'custom');
             $product->image()->create([
@@ -154,7 +156,7 @@ class ProductController extends Controller
             }
         }
         flash()->info('Product updated successfully!');
-        return redirect()->route('admin.products.index',['page' => $request->page]);
+        return redirect()->route('admin.products.index', ['page' => $request->page]);
     }
 
     /**
@@ -162,7 +164,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        File::delete('storage/' . $product->image->path);
+        if($product->image) {
+            File::delete('storage/' . $product->image->path);
+        }
         foreach ($product->gallery as $img) {
             File::delete('storage/' . $img->path);
         }
