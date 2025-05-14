@@ -17,6 +17,7 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()->type == 'customer') {
+            abort(403);
             return redirect('/');
         }
         return $next($request);

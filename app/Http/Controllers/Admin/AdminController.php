@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
+
     function index()
     {
         return view('dashboard.index');

@@ -12,7 +12,8 @@
     </div>
     <div class="down-content">
         <h4><a href="{{ route('site.product_single',$product->slug) }}">{{ $product->trans_name }}</a></h4>
-        <span>${{ $product->price }}</span>
+        {{-- aliases in config app --}}
+        <span>{{ Currency::format($product->price) }}</span>
         <ul class="stars">
             <li><i class="fa fa-star"></i></li>
             <li><i class="fa fa-star"></i></li>

@@ -19,52 +19,61 @@
     <!-- ***** Product Area Starts ***** -->
     <section class="section" id="product">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="left-images">
-                        <img class="main-image" src="{{ asset('storage/' . $product->image->path) }}" alt="">
-                        @if ($product->gallery)
-                            <div class="gallery-images d-flex flex-wrap gap-2 mt-3">
-                                @foreach ($product->gallery as $img)
-                                    <img src="{{ asset('storage/' . $img->path) }}" alt=""
-                                        class="gallery-thumbnail">
-                                @endforeach
-                            </div>
-                        @endif
+            <form action="{{ route('site.cart.store') }}" method="post">
+                @csrf
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="left-images">
+                            <img class="main-image" src="{{ asset('storage/' . $product->image->path) }}"
+                                alt="">
+                            @if ($product->gallery)
+                                <div class="gallery-images d-flex flex-wrap gap-2 mt-3">
+                                    @foreach ($product->gallery as $img)
+                                        <img src="{{ asset('storage/' . $img->path) }}" alt=""
+                                            class="gallery-thumbnail">
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="right-content">
-                        <h4>{{ $product->trans_name }}</h4>
-                        <span class="price" data-price="{{ $product->price }}">${{ $product->price }}</span>
-                        <ul class="stars">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                        </ul>
-                        <span>{{ $product->trans_description }}</span>
-                        <div class="quantity-content">
-                            <div class="left-content">
-                                <h6>No. of Orders</h6>
+
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <div class="col-lg-5">
+                        <div class="right-content">
+                            <h4>{{ $product->trans_name }}</h4>
+                            <span class="price" data-price="{{ $product->price }}">${{ $product->price }}</span>
+                            <ul class="stars">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                            </ul>
+                            <span>{{ $product->trans_description }}</span>
+                            <div class="quantity-content">
+                                <div class="left-content">
+                                    <h6>No. of Orders</h6>
+                                </div>
+                                <div class="right-content">
+                                    <div class="quantity buttons_added">
+                                        <input type="button" value="-" class="minus"><input type="number"
+                                            step="1" min="1" name="quantity" value="1" title="Qty"
+                                            class="input-text qty text" size="4" pattern=""
+                                            inputmode=""><input type="button" value="+" class="plus">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="right-content">
-                                <div class="quantity buttons_added">
-                                    <input type="button" value="-" class="minus"><input type="number"
-                                        step="1" min="1" max="" name="quantity" value="1"
-                                        title="Qty" class="input-text qty text" size="4" pattern=""
-                                        inputmode=""><input type="button" value="+" class="plus">
+                            <div class="total">
+                                <h4>Total: $<b class="final">{{ $product->price }}</b></h4>
+                                <div class="main-border-button add-to-cart" data-id="{{ $product->id }}">
+                                    <button class="btn btn-outline-secondary" type="button">Add To Cart</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="total">
-                            <h4>Total: $<b class="final">{{ $product->price }}</b></h4>
-                            <div class="main-border-button"><a href="#">Add To Cart</a></div>
-                        </div>
                     </div>
+
                 </div>
-            </div>
+            </form>
         </div>
     </section>
     <!-- ***** Product Area Ends ***** -->
@@ -123,6 +132,30 @@
                 let quantity = parseInt($('.qty').val())
                 $('.final').text(price * quantity)
             }
+
+
+            // add to cart
+            $('.add-to-cart').click(function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '/cart',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        product_id: id,
+                        quantity: parseInt($('.qty').val()),
+                    },
+                    success: (response) => {
+                        Swal.fire({
+                            title: "Item Added!",
+                            text: response.message ,
+                            icon: "success",
+                            draggable: true
+                        });
+                    }
+                })
+
+            })
         </script>
     @endpush
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebSiteController;
@@ -27,15 +28,21 @@ Route::name('site.')->controller(WebSiteController::class)->group(function () {
     Route::get('/products/{product:slug}', 'product_single')->name('product_single');
     Route::get('contact-us', 'contact')->name('contact');
 
+  Route::get('/cart', function () {
+    return view('website.cart');
+});
+
+Route::resource('cart',CartController::class);
+
 
 });
 
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

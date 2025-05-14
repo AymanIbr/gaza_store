@@ -65,7 +65,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Gaza',
+
+    'currency' => 'USD',
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +124,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'aliases' => [
+    'Currency' => App\Helpers\Currency::class,
+],
 
 ];

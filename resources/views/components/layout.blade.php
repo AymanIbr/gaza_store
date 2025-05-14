@@ -161,10 +161,12 @@
                                     </li>
                                 @endif
                             @endforeach
+
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
+
                         <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
@@ -244,6 +246,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- jQuery -->
     <script src="{{ asset('website/assets/js/jquery-2.1.0.min.js') }}"></script>
