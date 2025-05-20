@@ -75,7 +75,7 @@
         }
     </style>
 
-    @if (App::getLocale() == 'ar')
+    @if (app()->getLocale() == 'ar')
         <style>
             body {
                 direction: rtl;
@@ -219,6 +219,7 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @php
+                                     use Illuminate\Support\Facades\Auth;
                                     $count = Auth::user()->unreadnotifications->count();
                                 @endphp
                                 {{-- @if($count != 0) --}}

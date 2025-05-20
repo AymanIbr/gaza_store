@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('website/assets/css/owl-carousel.css') }}">
 
     <link rel="stylesheet" href="{{ asset('website/assets/css/lightbox.css') }}">
+
     @stack('css')
 
     <style>
@@ -269,6 +270,7 @@
 
     <!-- Global Init -->
     <script src="{{ asset('website/assets/js/custom.js') }}"></script>
+
     @stack('js')
 </body>
 

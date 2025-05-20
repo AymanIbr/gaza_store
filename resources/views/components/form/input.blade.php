@@ -12,7 +12,6 @@
     }
 @endphp --}}
 
-
 <input type="{{ $type }}" id="{{ $name }}"
     name="{{ $name }}" placeholder="{{ $placeholder }}" {{ $attributes->class(['form-control', 'is-invalid'=>$errors->has($name)]) }} value="{{ old($name, $oldval) }}">
    {{-- name="{{ $name }}" placeholder="{{ $placeholder }}" {{ $attributes->merge(['class' => $inputClass]) }} value="{{ old($name, $oldval) }}"> --}}

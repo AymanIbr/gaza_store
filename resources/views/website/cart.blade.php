@@ -93,7 +93,7 @@
 
              </ul>
          </div>
-         <a href="#"class="proceed-btn mx-auto">Proceed to Checkout</a>
+         <a href="{{ route('site.checkout') }}"class="proceed-btn mx-auto">Proceed to Checkout</a>
      </div>
 
 

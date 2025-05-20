@@ -14,8 +14,8 @@ class Payment extends Model
         return $this->belongsTo(User::class)->withDefault();
     }
 
-    function order()
-    {
-        return $this->belongsTo(Order::class)->withDefault();
-    }
+    // function order()
+    // {
+    //     return $this->belongsTo(Order::class)->withDefault();
+    // }
 }

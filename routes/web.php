@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebSiteController;
@@ -31,6 +32,9 @@ Route::name('site.')->controller(WebSiteController::class)->group(function () {
   Route::get('/cart', function () {
     return view('website.cart');
 });
+
+Route::get('checkout',[CheckoutController::class, 'create'])->name('checkout');
+Route::post('checkout',[CheckoutController::class, 'store']);
 
 Route::resource('cart',CartController::class);
 

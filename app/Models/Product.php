@@ -36,10 +36,10 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    function order_details()
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
+    // function order_details()
+    // {
+    //     return $this->hasMany(OrderDetail::class);
+    // }
 
 
     public function getImagePathAttribute()
