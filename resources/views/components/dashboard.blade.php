@@ -219,18 +219,19 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @php
-                                     use Illuminate\Support\Facades\Auth;
+                                    use Illuminate\Support\Facades\Auth;
                                     $count = Auth::user()->unreadnotifications->count();
                                 @endphp
-                                {{-- @if($count != 0) --}}
-                                <span class="{{ ($count == 0) ? 'd-none' : '' }} badge badge-danger badge-counter" data-count={{ $count }}>
+                                {{-- @if ($count != 0) --}}
+                                <span class="{{ $count == 0 ? 'd-none' : '' }} badge badge-danger badge-counter"
+                                    data-count={{ $count }}>
                                     @php
                                         if ($count > 5) {
                                             echo '5+';
                                         } else {
                                             echo $count;
                                         }
-                                        @endphp
+                                    @endphp
                                 </span>
                                 {{-- @endif --}}
                             </a>
@@ -243,7 +244,9 @@
 
                                 {{-- {{ Auth::user()->notifications }} --}}
                                 @foreach (Auth::user()->notifications()->take(5)->get() as $item)
-                                    <a class="dropdown-item d-flex align-items-center" style="{{ $item->read_at ? '' : 'background: rgb(229, 229, 229)' }}" href="{{ $item->data['url'] }}?id={{ $item->id }}">
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        style="{{ $item->read_at ? '' : 'background: rgb(229, 229, 229)' }}"
+                                        href="{{ $item->data['url'] }}?id={{ $item->id }}">
                                         <div>
                                             <div class="small text-gray-500">{{ $item->created_at->format('F d, Y') }}
                                             </div>
@@ -284,10 +287,13 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="{{ route('admin.settings') }}">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
+                                @can('settings')
+                                    <a class="dropdown-item" href="{{ route('admin.settings') }}">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Settings
+                                    </a>
+                                @endcan
+
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log

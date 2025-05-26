@@ -18,8 +18,34 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>{{ __('admin.dash') }}</span></a>
         </li>
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+
+        @canany(['users', 'create-user'])
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item {{ request()->routeIs('admin.users.index' || 'admin.users.create') ? 'active' : '' }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoUser"
+                    aria-expanded="true" aria-controls="collapseTwoUser">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <div id="collapseTwoUser"
+                    class="collapse {{ request()->routeIs('admin.users.index') || request()->routeIs('admin.users.create') ? 'show' : '' }}"
+                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        @can('users')
+                            <a class="collapse-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
+                                href="{{ route('admin.users.index') }}">All Users</a>
+                        @endcan
+                        @can('create-user')
+                            <a class="collapse-item  {{ request()->routeIs('admin.users.create') ? 'active' : '' }}"
+                                href="{{ route('admin.users.create') }}">Create User</a>
+                        @endcan
+
+                    </div>
+                </div>
+            </li>
+        @endcanany
 
         <!-- Nav Item - Pages Collapse Menu -->
         {{-- <li class="nav-item {{ request()->routeIs('admin.categories.index') || request()->routeIs('admin.categories.create') ?  'active' : ''}} ">
@@ -36,33 +62,44 @@
                 </div>
             </div>
         </li> --}}
-
-
-        <li class="nav-item {{ request()->routeIs('admin.categories.index') ? 'active' : '' }} ">
-            <a class="nav-link" href="{{ route('admin.categories.index') }}">
-                <i class="fas fa-fw fa-tag"></i>
-                <span>{{ __('admin.all_categories') }}</span></a>
-        </li>
-
-
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoProducts"
-                aria-expanded="true" aria-controls="collapseTwoProducts">
-                <i class="fas fa-fw fa-heart"></i>
-                <span>{{ __('admin.products') }}</span>
-            </a>
-            <div id="collapseTwoProducts" class="collapse {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'show' : '' }} " aria-labelledby="headingTwo"
-                data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item {{ request()->routeIs('admin.products.index') ? 'active' : '' }}" href="{{ route('admin.products.index') }}">{{ __('admin.products') }}</a>
-                    <a class="collapse-item  {{ request()->routeIs('admin.products.create') ? 'active' : '' }}" href="{{ route('admin.products.create') }}">{{ __('admin.add_new') }}</a>
-                </div>
-            </div>
-        </li>
+        @can('categories')
+            <li class="nav-item {{ request()->routeIs('admin.categories.index') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('admin.categories.index') }}">
+                    <i class="fas fa-fw fa-tag"></i>
+                    <span>{{ __('admin.all_categories') }}</span></a>
+            </li>
+        @endcan
 
+
+
+        @canany(['create-product', 'products'])
+            <hr class="sidebar-divider my-0">
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li
+                class="nav-item {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'active' : '' }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoProducts"
+                    aria-expanded="true" aria-controls="collapseTwoProducts">
+                    <i class="fas fa-fw fa-heart"></i>
+                    <span>{{ __('admin.products') }}</span>
+                </a>
+                <div id="collapseTwoProducts"
+                    class="collapse {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.create') ? 'show' : '' }} "
+                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @can('products')
+                            <a class="collapse-item {{ request()->routeIs('admin.products.index') ? 'active' : '' }}"
+                                href="{{ route('admin.products.index') }}">{{ __('admin.products') }}</a>
+                        @endcan
+                        @can('create-product')
+                            <a class="collapse-item  {{ request()->routeIs('admin.products.create') ? 'active' : '' }}"
+                                href="{{ route('admin.products.create') }}">{{ __('admin.add_new') }}</a>
+                        @endcan
+                    </div>
+                </div>
+            </li>
+        @endcanany
 
         <hr class="sidebar-divider my-0">
 
@@ -92,27 +129,38 @@
                 <span>{{ __('admin.customers') }}</span></a>
         </li>
 
-        <hr class="sidebar-divider my-0">
+        @canany(['create-role', 'roles'])
+            <hr class="sidebar-divider my-0">
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item {{ request()->routeIs('admin.roles.index' || 'admin.roles.create') ? 'active' : '' }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoRole"
+                    aria-expanded="true" aria-controls="collapseTwoRole">
+                    <i class="fas fa-fw fa-lock"></i>
+                    <span>{{ __('admin.role') }}</span>
+                </a>
+                <div id="collapseTwoRole"
+                    class="collapse {{ request()->routeIs('admin.roles.index') || request()->routeIs('admin.roles.create') ? 'show' : '' }}"
+                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @can('roles')
+                            <a class="collapse-item {{ request()->routeIs('admin.roles.index') ? 'active' : '' }}"
+                                href="{{ route('admin.roles.index') }}">{{ __('admin.all_role') }}</a>
+                        @endcan
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item ">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoRole"
-                aria-expanded="true" aria-controls="collapseTwoRole">
-                <i class="fas fa-fw fa-lock"></i>
-                <span>{{ __('admin.role') }}</span>
-            </a>
-            <div id="collapseTwoRole" class="collapse" aria-labelledby="headingTwo"
-                data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item " href="">{{ __('admin.all_role') }}</a>
-                    <a class="collapse-item  " href="">{{ __('admin.add_new') }}</a>
+                        @can('create-role')
+                            <a class="collapse-item  {{ request()->routeIs('admin.roles.create') ? 'active' : '' }}"
+                                href="{{ route('admin.roles.create') }}">{{ __('admin.add_new') }}</a>
+                        @endcan
+
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+        @endcanany
+
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
 
     </ul>
-   </div>
+</div>

@@ -1,10 +1,10 @@
-<x-dashboard title="All Products">
+<x-dashboard title="All Users">
 
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Products {{ $products->total() }}</span>
+        <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Users</span>
         </h1>
-        @can('create-product')
-            <a href="{{ route('admin.products.create') }}" class="btn btn-info">
+        @can('create-user')
+            <a href="{{ route('admin.users.create') }}" class="btn btn-info">
                 <i class="fas fa-plus"></i> Add New
             </a>
         @endcan
@@ -19,65 +19,66 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Category</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Category</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse ($products as $product)
+                            @forelse ($users as $user)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
                                     <td>
-                                        <img width="100px" height="100px" style="object-fit: cover"
-                                            class="img-thumbnail" src="{{ $product->image_path }}" alt="">
+                                        @foreach ($user->roles as $role)
+                                            <span class="badge bg-primary p-2">{{ $role->name }}</span>
+                                        @endforeach
                                     </td>
-                                    <td>{{ $product->trans_name }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>{{ $product->quantity }}</td>
-                                    <td>{{ $product->category->trans_name }}</td>
+                                    <td>{{ $user->created_at->format('Y - m - d') }}</td>
                                     <td>
-                                        @can('update-product')
-                                            <a href="{{ route('admin.products.edit', [$product->id, 'page' => request()->page]) }}"
+
+                                        @can('update-user')
+                                            <a href="{{ route('admin.users.edit', $user->id) }}"
                                                 class="edit-row btn btn-sm btn-primary">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         @endcan
 
-                                        @can('delete-product')
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                method="POST" style="display: inline-block">
+                                        @can('delete-user')
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                                style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button onclick="" type="submit" class="btn btn-sm btn-danger"><i
                                                         class="fa fa-trash"></i></button>
                                             </form>
                                         @endcan
+
+
                                     </td>
                                 @empty
                                 <tr>
-                                    <td class="text-center" colspan="7">No Data Found</td>
+                                    <td class="text-center text-danger" colspan="4">No Data Found</td>
                                 </tr>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                     <div class="pagination">
-                        {{ $products->appends($_GET)->links() }}
+                        {{-- {{ $users->links() }} --}}
                     </div>
                 </div>
 

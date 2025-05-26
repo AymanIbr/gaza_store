@@ -93,7 +93,7 @@
             <label class="d-block" for="image">
                 <img class="img-thumbnail prev-img"
                     style="width: 100%; height: 300px; cursor: pointer; object-fit: cover" {{-- $post->image ? $post->image --}}
-                    src="{{ $product->image && $product->image->path ? asset('storage/' . $product->image->path) : asset('assets/img/prev.jpg') }}"
+                    src="{{ $product->id ? asset('storage/' . $product->image->path) : asset('assets/img/prev.jpg') }}"
                     alt="Product Image">
             </label>
             @error('image')

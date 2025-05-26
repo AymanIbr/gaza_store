@@ -6,9 +6,11 @@
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Categories {{ $categories->total() }}</span>
         </h1>
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-new-category">
-            <i class="fas fa-plus"></i> Add New
-        </button>
+        @can('create-category')
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-new-category">
+                <i class="fas fa-plus"></i> Add New</button>
+        @endcan
+
     </div>
 
     <div class="my-2">
@@ -44,59 +46,63 @@
 
     {{-- Add new Category Modal --}}
 
-    <div class="modal fade" id="add-new-category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="alert-error text-danger d-none rounded"
-                        style="background-color: #f8d7da; color: #842029; padding: 10px;"></p>
-                    <form action="{{ route('admin.categories.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            @include('dashboard.categories._form', ['category' => new Category()])
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- Edit Modal Category --}}
-
-    <div class="modal fade" id="edit-category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+    @can('create-category')
+        <div class="modal fade" id="add-new-category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <div class="modal-body">
                         <p class="alert-error text-danger d-none rounded"
                             style="background-color: #f8d7da; color: #842029; padding: 10px;"></p>
-                        <form action="" method="POST">
+                        <form action="{{ route('admin.categories.store') }}" method="POST">
                             @csrf
-                            @method('put')
-                            @include('dashboard.categories._form', ['category' => new Category()])
+                            <div class="mb-3">
+                                @include('dashboard.categories._form', ['category' => new Category()])
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-info">Update</button>
+                                <button type="submit" class="btn btn-success">Save</button>
                             </div>
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+    @endcan
+
+
+
+    {{-- Edit Modal Category --}}
+    @can('update-category')
+        <div class="modal fade" id="edit-category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <p class="alert-error text-danger d-none rounded"
+                                style="background-color: #f8d7da; color: #842029; padding: 10px;"></p>
+                            <form action="" method="POST">
+                                @csrf
+                                @method('put')
+                                @include('dashboard.categories._form', ['category' => new Category()])
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-info">Update</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endcan
 
         @push('css')
             <style>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
@@ -75,12 +76,18 @@ class AdminController extends Controller
 
     function settings()
     {
+        if (Gate::denies('settings')) {
+            return abort(403, 'Don\'t have permission to access this page');
+        }
         $settings = Setting::pluck('value', 'key')->toArray();
         return view('dashboard.settings', compact('settings'));
     }
 
     function settings_save(Request $request)
     {
+        if (Gate::denies('settings')) {
+            return abort(403, 'Don\'t have permission to access this page');
+        }
         $data = $request->except('_token', '_method', 'site_logo');
         if ($request->hasFile('site_logo')) {
             $data['site_logo'] = $request->file('site_logo')->store('uploads', 'custom');

@@ -8,15 +8,23 @@ use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Category::class, 'category');
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        if (!Gate::allows('categories')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $categories = Category::withCount('products')->orderBy('id', $request->order ?? 'DESC')->when(
             $request->search,
             function (Builder $query) use ($request) {
@@ -36,6 +44,13 @@ class CategoryController extends Controller
         return view('dashboard.categories.index', compact('categories'));
     }
 
+      public function create()
+    {
+        if (Gate::denies('create-category')) {
+            return abort(403, 'Don\'t have Permission');
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -45,6 +60,10 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        // Gate::authorize('create-category');
+        if (Gate::denies('create-category')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         // dd($request->all());
 
         // $data = $request->except('image');
@@ -62,8 +81,8 @@ class CategoryController extends Controller
         // encode => convert array to json
         //JSON_UNESCAPED_UNICODE => Don't turn Arabic into symbols
         $category = Category::create([
-            'name' => json_encode($name,JSON_UNESCAPED_UNICODE),
-            'description' => json_encode($description,JSON_UNESCAPED_UNICODE),
+            'name' => json_encode($name, JSON_UNESCAPED_UNICODE),
+            'description' => json_encode($description, JSON_UNESCAPED_UNICODE),
         ]);
 
         $path = $request->file('image')->store('uploads', 'custom');
@@ -100,6 +119,10 @@ class CategoryController extends Controller
      */
     public function edit(Request $request, Category $category)
     {
+        if (Gate::denies('update-category')) {
+            return abort(403, 'Don\'t have Permission');
+        }
+
         if ($request->wantsJson()) {
             return response()->json([
                 'msg' => 'Category updated successfully',
@@ -114,6 +137,9 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
+        if (Gate::denies('update-category')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         // $data = $request->except('image');
 
         $name = [
@@ -128,8 +154,8 @@ class CategoryController extends Controller
 
         $category->update([
             // 'name' => ''  Mutator
-            'name' => json_encode($name,JSON_UNESCAPED_UNICODE),
-            'description' => json_encode($description,JSON_UNESCAPED_UNICODE),
+            'name' => json_encode($name, JSON_UNESCAPED_UNICODE),
+            'description' => json_encode($description, JSON_UNESCAPED_UNICODE),
         ]);
 
         if ($request->hasFile('image')) {
@@ -162,6 +188,11 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request, Category $category)
     {
+        Gate::authorize('delete-category');
+        //  if (Gate::denies('delete-category')) {
+        //     return abort(403, 'Don\'t have Permission');
+        // }
+
         $isDeleted = $category->delete();
 
         if ($request->wantsJson()) {

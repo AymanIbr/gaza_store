@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -28,12 +30,12 @@ Route::middleware('auth', 'is_admin', 'verified')->prefix(LaravelLocalization::s
 
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
+        Route::resource('roles', RolesController::class);
+        Route::resource('users', UserController::class);
 
-        Route::get('/delete-image/{id?}',[ProductController::class, 'delete_img'])->name('delete_img');
+        Route::get('/delete-image/{id?}', [ProductController::class, 'delete_img'])->name('delete_img');
 
-        Route::get('/orders',[AdminController::class, 'orders'])->name('orders');
-        Route::get('/notifications',[AdminController::class, 'notifications'])->name('notifications');
-
-
+        Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
+        Route::get('/notifications', [AdminController::class, 'notifications'])->name('notifications');
     });
 });

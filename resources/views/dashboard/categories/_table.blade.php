@@ -42,13 +42,16 @@
                     <td>{{ $category->updated_at->diffForHumans() }}</td>
                     <td>
 
+                        @can('update-category')
                         <a href="{{ route('admin.categories.edit', [$category->id, 'page' => request()->page]) }}"
                             class="edit-row btn btn-sm btn-primary edit-category" data-id="{{ $category->id }}"
                             data-bs-toggle="modal" data-bs-target="#edit-category">
                             <i class="fa fa-edit"></i>
                         </a>
+                        @endcan
 
 
+                        @can('delete-category')
                         <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
                             style="display: inline-block">
                             @csrf
@@ -56,6 +59,8 @@
                             <button onclick="confirmDestroy(event)" type="submit" class="btn btn-sm btn-danger"><i
                                     class="fa fa-trash"></i></button>
                         </form>
+                        @endcan
+
 
                     </td>
                 @empty

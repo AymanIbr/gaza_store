@@ -5,8 +5,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h1 class="h3 text-gray-800">Add new Product</h1>
+        @can('products')
         <a href="{{ route('admin.products.index') }}" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> All Products</a>
-
+        @endcan
     </div>
 
 

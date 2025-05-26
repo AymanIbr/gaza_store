@@ -1,10 +1,10 @@
-<x-dashboard title="All Products">
+<x-dashboard title="All Roles">
 
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Products {{ $products->total() }}</span>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Roles {{ $roles->total() }}</span>
         </h1>
-        @can('create-product')
-            <a href="{{ route('admin.products.create') }}" class="btn btn-info">
+        @can('create-role')
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">
                 <i class="fas fa-plus"></i> Add New
             </a>
         @endcan
@@ -19,48 +19,37 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Category</th>
+                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Category</th>
+                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse ($products as $product)
+                            @forelse ($roles as $role)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $role->created_at->format('Y - m - d') }}</td>
                                     <td>
-                                        <img width="100px" height="100px" style="object-fit: cover"
-                                            class="img-thumbnail" src="{{ $product->image_path }}" alt="">
-                                    </td>
-                                    <td>{{ $product->trans_name }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>{{ $product->quantity }}</td>
-                                    <td>{{ $product->category->trans_name }}</td>
-                                    <td>
-                                        @can('update-product')
-                                            <a href="{{ route('admin.products.edit', [$product->id, 'page' => request()->page]) }}"
+
+                                        @can('update-role')
+                                            <a href="{{ route('admin.roles.edit', $role->id) }}"
                                                 class="edit-row btn btn-sm btn-primary">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         @endcan
 
-                                        @can('delete-product')
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                method="POST" style="display: inline-block">
+                                        @can('delete-role')
+                                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
+                                                style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button onclick="" type="submit" class="btn btn-sm btn-danger"><i
@@ -70,14 +59,14 @@
                                     </td>
                                 @empty
                                 <tr>
-                                    <td class="text-center" colspan="7">No Data Found</td>
+                                    <td class="text-center text-danger" colspan="4">No Data Found</td>
                                 </tr>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                     <div class="pagination">
-                        {{ $products->appends($_GET)->links() }}
+                        {{ $roles->links() }}
                     </div>
                 </div>
 

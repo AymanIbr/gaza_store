@@ -8,14 +8,24 @@ use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Product::class, 'product');
+    // }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if (Gate::denies('products')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $products = Product::latest('id')->with('category')->paginate(2);
         return view('dashboard.products.index', compact('products'));
     }
@@ -25,6 +35,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if (Gate::denies('create-product')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $categories = Category::select('id', 'name')->get();
         $product = new product();
         return view('dashboard.products.create', compact('categories', 'product'));
@@ -35,6 +48,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('create-product')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $request->validate([
             'name_en' => 'required',
             'name_ar' => 'required',
@@ -98,6 +114,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        if (Gate::denies('update-product')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $categories = Category::select('id', 'name')->get();
         return view('dashboard.products.edit', compact('categories', 'product'));
     }
@@ -107,6 +126,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        if (Gate::denies('update-product')) {
+            return abort(403, 'Don\'t have Permission');
+        }
         $request->validate([
             'name_en' => 'required',
             'name_ar' => 'required',
@@ -164,7 +186,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if($product->image) {
+        if (Gate::denies('delete-product')) {
+            return abort(403, 'Don\'t have Permission');
+        }
+        if ($product->image) {
             File::delete('storage/' . $product->image->path);
         }
         foreach ($product->gallery as $img) {

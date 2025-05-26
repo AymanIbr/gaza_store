@@ -8,27 +8,27 @@
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
-                    <x-form.input label="Site Name" name="site_name" oldval="{{ $settings['site_name'] }}" placeholder="Enter Website Name"/>
+                    <x-form.input label="Site Name" name="site_name" oldval="{{ $settings['site_name'] ?? '' }}" placeholder="Enter Website Name"/>
                 </div>
 
                 <div class="mb-3">
-                    <x-form.file label="Site Logo" name="site_logo" oldimage="{{ 'storage/'. $settings['site_logo'] ?? '' }}" can_delete="true"/>
+                    <x-form.file label="Site Logo" name="site_logo" oldimage="{{ 'storage/' . ($settings['site_logo'] ?? '') }}" can_delete="true"/>
                 </div>
 
                 <div class="mb-3">
-                    <x-form.input label="Facebook" name="facebook" oldval="{{ $settings['facebook'] }}" placeholder="Enter Facebook URL"/>
+                    <x-form.input label="Facebook" name="facebook" oldval="{{ $settings['facebook'] ?? '' }}" placeholder="Enter Facebook URL"/>
                 </div>
 
                 <div class="mb-3">
-                    <x-form.input label="Twitter" name="twitter" oldval="{{ $settings['twitter'] }}" placeholder="Enter Twitter URL"/>
+                    <x-form.input label="Twitter" name="twitter" oldval="{{ $settings['twitter'] ?? '' }}" placeholder="Enter Twitter URL"/>
                 </div>
 
                 <div class="mb-3">
-                    <x-form.input label="Linked In" name="linkedin" oldval="{{ $settings['linkedin'] }}" placeholder="Enter Linked In URL"/>
+                    <x-form.input label="Linked In" name="linkedin" oldval="{{ $settings['linkedin'] ?? '' }}" placeholder="Enter Linked In URL"/>
                 </div>
 
                 <div class="mb-3">
-                    <x-form.area label="Copyright" name="copyright" oldval="{{ $settings['copyright'] }}" placeholder="Enter Copyright"/>
+                    <x-form.area label="Copyright" name="copyright" oldval="{{ $settings['copyright'] ?? '' }}" placeholder="Enter Copyright Text"/>
                 </div>
 
                 <button class="btn btn-success"><i class="fas fa-save"></i> Save</button>
