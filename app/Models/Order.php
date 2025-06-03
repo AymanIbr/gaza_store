@@ -15,7 +15,8 @@ class Order extends Model
         'user_id',
         'payment_method',
         'status',
-        'payment_status'
+        'payment_status',
+        'number'
     ];
 
     public function user()
@@ -32,6 +33,14 @@ class Order extends Model
             $order->number = Order::getNextOrderNumber();
         });
     }
+
+
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id');
+    }
+
 
     // many to many
     public function products()
@@ -52,12 +61,18 @@ class Order extends Model
 
     public function billingAddress()
     {
-        return $this->hasOne(OrderAddress::class, 'order_id','id')->where('type','billing');
+        return $this->hasOne(OrderAddress::class, 'order_id', 'id')->where('type', 'billing');
     }
 
-     public function shippingAddress()
+    public function shippingAddress()
     {
-        return $this->hasOne(OrderAddress::class, 'order_id','id')->where('type','shipping');
+        return $this->hasOne(OrderAddress::class, 'order_id', 'id')->where('type', 'shipping');
+    }
+
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
     }
 
     public static function getNextOrderNumber()

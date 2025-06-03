@@ -5,6 +5,7 @@
 // Api Test route
 
 use App\Http\Controllers\Api\ApiTestController;
+use App\Http\Controllers\Api\DeliveriesController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,11 @@ Route::get('weather',[ApiTestController::class, 'weather']);
     // php artisan make:con Api/ProductController -r --api
 
 Route::apiResource('products',ProductController::class);
+
+
+// API Deliveries
+
+Route::put('deliveries/{delivery}',[DeliveriesController::class, 'update']);
 
 
 

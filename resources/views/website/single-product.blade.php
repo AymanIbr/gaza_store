@@ -24,12 +24,12 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="left-images">
-                            <img class="main-image" src="{{ asset('storage/' . $product->image->path) }}"
+                            <img class="main-image" name="main" src="{{ asset('storage/' . $product->image->path) }}"
                                 alt="">
                             @if ($product->gallery)
                                 <div class="gallery-images d-flex flex-wrap gap-2 mt-3">
                                     @foreach ($product->gallery as $img)
-                                        <img src="{{ asset('storage/' . $img->path) }}" alt=""
+                                        <img src="{{ asset('storage/' . $img->path) }}" onmouseenter="main.src = this.src" alt=""
                                             class="gallery-thumbnail">
                                     @endforeach
                                 </div>

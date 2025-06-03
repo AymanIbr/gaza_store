@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Front\OrderMapController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebSiteController;
 use Illuminate\Support\Facades\Broadcast;
@@ -20,7 +22,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 Route::prefix(LaravelLocalization::setLocale())->group(function () {
 
 
-Route::name('site.')->controller(WebSiteController::class)->group(function () {
+  Route::name('site.')->controller(WebSiteController::class)->group(function () {
 
     Route::get('/', 'index')->name('index');
     Route::get('/about-us', 'about')->name('about');
@@ -29,34 +31,41 @@ Route::name('site.')->controller(WebSiteController::class)->group(function () {
     Route::get('/products/{product:slug}', 'product_single')->name('product_single');
     Route::get('contact-us', 'contact')->name('contact');
 
-  Route::get('/cart', function () {
-    return view('website.cart');
-});
+    Route::get('/cart', function () {
+      return view('website.cart');
+    });
 
-Route::get('checkout',[CheckoutController::class, 'create'])->name('checkout');
-Route::post('checkout',[CheckoutController::class, 'store']);
+    Route::get('checkout', [CheckoutController::class, 'create'])->name('checkout');
+    Route::post('checkout', [CheckoutController::class, 'store']);
 
-Route::resource('cart',CartController::class);
-
-
-});
+    Route::resource('cart', CartController::class);
+  });
 
 
+  Route::get('payments/{order}', [PaymentController::class, 'create'])->name('payment.create');
+
+  Route::any('payments/paypal/callback', [PaymentController::class, 'callback'])->name('paypal.callback');
+  Route::any('payments/paypal/cancel', [PaymentController::class, 'cancel'])->name('paypal.cancel');
 
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+  // map
+
+  Route::get('orders/{order}', [OrderMapController::class, 'show'])
+    ->name('orders.show');
+
+  // Route::get('/dashboard', function () {
+  //     return view('dashboard');
+  // })->middleware(['auth', 'verified'])->name('dashboard');
+
+  Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+  });
 
-// test notification
-Route::get('/send', [NotificationController::class, 'send']);
-
+  // test notification
+  Route::get('/send', [NotificationController::class, 'send']);
 });
 
 
