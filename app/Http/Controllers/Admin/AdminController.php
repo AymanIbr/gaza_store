@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\Setting;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +23,12 @@ class AdminController extends Controller
 
     function index()
     {
-        return view('dashboard.index');
+        $user_count = User::count();
+        $category_count = Category::count();
+        $product_count = Product::count();
+        $order_count = Order::count();
+        return view('dashboard.index',
+        compact('user_count','category_count','product_count','order_count'));
     }
 
 
@@ -128,5 +139,184 @@ class AdminController extends Controller
     {
         Auth::user()->notifications->markAsRead();
         return view('dashboard.notifications');
+    }
+
+
+
+    // Chart Order
+
+    // public function ordersChart(Request $request)
+    // {
+    //     $group = $request->query('group', 'month');
+
+    //     $query = DB::table('orders')
+    //         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+    //         ->select([
+    //             DB::raw('COUNT(DISTINCT orders.id) as count'),
+    //             DB::raw('SUM(order_items.price * order_items.quantity) as total')])
+    //         ->groupBy('label')->orderBy('label');
+
+    //     switch ($group) {
+    //         case 'day':
+    //             $query->addSelect(DB::raw('DATE(created_at) as label'));
+    //             $query->whereDate('created_at', '>=', Carbon::now()->startOfMonth());
+    //             $query->whereDate('created_at', '<=', Carbon::now()->endOfMonth());
+    //             break;
+    //         case 'week':
+    //             $query->addSelect(DB::raw('DATE(created_at) as label'));
+    //             $query->whereDate('created_at', '>=', Carbon::now()->startOfWeek());
+    //             $query->whereDate('created_at', '<=', Carbon::now()->endOfWeek());
+    //             break;
+    //         case 'year':
+    //             $query->addSelect(DB::raw('YEAR(created_at) as label'));
+    //             $query->whereYear('created_at', '>=', Carbon::now()->subYears(5)->year);
+    //             $query->whereYear('created_at', '<=', Carbon::now()->addYears(4)->year);
+    //             break;
+    //         case 'month':
+    //             $query->addSelect(DB::raw('MONTH(created_at) as label'));
+    //             $query->whereDate('created_at', '>=', Carbon::now()->startOfYear());
+    //             $query->whereDate('created_at', '<=', Carbon::now()->endOfYear());
+    //           /*  $labels = [
+    //                 1 => 'Jan',
+    //                 'Feb',
+    //                 'Mar',
+    //                 'Apr',
+    //                 'May',
+    //                 'Jun',
+    //                 'Jul',
+    //                 'Aug',
+    //                 'Sep',
+    //                 'Oct',
+    //                 'Nov',
+    //                 'Dec'
+    //             ];
+    //             */
+    //         default;
+    //     }
+
+    //     // $entries = DB::table('orders')
+    //     //     ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+    //     //     ->select([
+    //     //         // DB::raw('MONTH(orders.created_at) as month'),
+    //     //         // DB::raw('YEAR(orders.created_at) as year'),
+    //     //         DB::raw($group_col),
+    //     //         DB::raw('COUNT(DISTINCT orders.id) as count'),
+    //     //         DB::raw('SUM(order_items.price * order_items.quantity) as total')
+    //     //     // ])->whereYear('orders.created_at', 2025)
+    //     //     // ->groupBy(DB::raw('MONTH(orders.created_at)'))
+    //     //     ->groupBy('label')->orderBy('label')
+    //     //     ->get();
+
+    //     $entries = $query->get();
+
+
+    //     $labels = $total = $count = [];
+
+    //     foreach ($entries as $entry) {
+    //         $labels[] = $entry->label;
+    //         $total[$entry->label] = $entry->total;
+    //         $count[$entry->label] = $entry->count;
+    //     }
+
+    //     // foreach ($labels as $month => $name) {
+    //     //     if (!array_key_exists($month, $count)) {
+    //     //         $count[$month] = 0;
+    //     //     }
+
+    //     //     if (!array_key_exists($month, $total)) {
+    //     //         $total[$month] = 0;
+    //     //     }
+    //     // }
+    //     // ksort($total);
+    //     // ksort($count);
+    //     return [
+    //         'group' => $group,
+    //         'labels' => array_values($labels),
+    //         'datasets' => [
+    //             [
+    //                 'label' => 'Total ($)',
+    //                 'borderColor' => 'blue',
+    //                 'backgroundColor' => 'blue',
+    //                 'data' => array_values($total),
+    //             ],
+
+    //             [
+    //                 'label' => 'Orders #',
+    //                 'borderColor' => 'darkgreen',
+    //                 'backgroundColor' => 'darkgreen',
+    //                 'data' => array_values($count),
+    //             ],
+
+    //         ]
+    //     ];
+    // }
+
+    public function ordersChart(Request $request)
+    {
+        $group = $request->query('group', 'month');
+
+        $query = DB::table('orders')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->select([
+                DB::raw('COUNT(DISTINCT orders.id) as count'),
+                DB::raw('SUM(order_items.price * order_items.quantity) as total'),
+            ]);
+
+        switch ($group) {
+            case 'day':
+                $query->addSelect(DB::raw('DATE(orders.created_at) as label'));
+                $query->whereDate('orders.created_at', '>=', Carbon::now()->startOfMonth());
+                $query->whereDate('orders.created_at', '<=', Carbon::now()->endOfMonth());
+                break;
+
+            case 'week':
+                $query->addSelect(DB::raw('DATE(orders.created_at) as label'));
+                $query->whereDate('orders.created_at', '>=', Carbon::now()->startOfWeek());
+                $query->whereDate('orders.created_at', '<=', Carbon::now()->endOfWeek());
+                break;
+
+            case 'year':
+                $query->addSelect(DB::raw('YEAR(orders.created_at) as label'));
+                $query->whereYear('orders.created_at', '>=', Carbon::now()->subYears(5)->year);
+                $query->whereYear('orders.created_at', '<=', Carbon::now()->addYears(4)->year);
+                break;
+
+            case 'month':
+            default:
+                $query->addSelect(DB::raw('MONTH(orders.created_at) as label'));
+                $query->whereDate('orders.created_at', '>=', Carbon::now()->startOfYear());
+                $query->whereDate('orders.created_at', '<=', Carbon::now()->endOfYear());
+                break;
+        }
+
+        $query->groupBy('label')->orderBy('label');
+        $entries = $query->get();
+
+        $labels = $total = $count = [];
+
+        foreach ($entries as $entry) {
+            $labels[] = $entry->label;
+            $total[$entry->label] = $entry->total;
+            $count[$entry->label] = $entry->count;
+        }
+
+        return [
+            'group' => $group,
+            'labels' => array_values($labels),
+            'datasets' => [
+                [
+                    'label' => 'Total ($)',
+                    'borderColor' => 'blue',
+                    'backgroundColor' => 'rgba(0, 0, 255, 0.6)',
+                    'data' => array_values($total),
+                ],
+                [
+                    'label' => 'Orders #',
+                    'borderColor' => 'darkgreen',
+                    'backgroundColor' => 'rgba(0, 100, 0, 0.6)',
+                    'data' => array_values($count),
+                ],
+            ]
+        ];
     }
 }

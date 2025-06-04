@@ -16,6 +16,7 @@ Route::middleware('auth', 'is_admin', 'verified')->prefix(LaravelLocalization::s
     Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::get('/charts/orders', [AdminController::class, 'ordersChart'])->name('ordersChart');
 
 
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
