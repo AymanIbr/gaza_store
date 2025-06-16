@@ -121,7 +121,7 @@
                         <a href="{{ route('site.index') }}" class="logo">
                             {{-- <img src="{{ asset('website/assets/images/logo.png') }}"> --}}
                             @if (getSettings('site_logo'))
-                                <img src="{{ asset('storage/' . getSettings('site_logo')) }}" alt="logo">
+                                <img src="{{ asset('storage/' . getSettings('site_logo')) }}" style="width: 100px; hight:100px; border-radius: 50%" alt="logo">
                             @else
                                 <h2 class="text-dark pt-4">{{ getSettings('site_name') ?? config('app.name') }}</h2>
                             @endif

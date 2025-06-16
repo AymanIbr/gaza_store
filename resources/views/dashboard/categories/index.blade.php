@@ -7,8 +7,10 @@
         <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Categories {{ $categories->total() }}</span>
         </h1>
         @can('create-category')
-            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-new-category">
-                <i class="fas fa-plus"></i> Add New</button>
+        <div class="" id="btn">
+            <a type="button"data-bs-toggle="modal" data-bs-target="#add-new-category">
+                <i class="fas fa-plus"></i> Add New</a>
+        </div>
         @endcan
 
     </div>

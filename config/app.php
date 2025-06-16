@@ -126,7 +126,7 @@ return [
     ],
 
     'aliases' => [
-    'Currency' => App\Helpers\Currency::class,
-],
+        'Currency' => App\Helpers\Currency::class,
+    ],
 
 ];

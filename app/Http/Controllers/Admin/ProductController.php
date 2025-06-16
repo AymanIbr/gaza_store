@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -61,7 +63,8 @@ class ProductController extends Controller
             'description_en' => 'required',
             'description_ar' => 'required',
             'quantity' => 'required|integer',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'is_featured' => 'nullable|boolean',
         ]);
 
         // $data = $request->except('_token', 'image', 'gallery');
@@ -82,6 +85,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'category_id' => $request->category_id,
+            'is_featured' => $request->input('is_featured',0)
         ]);
 
         $path = $request->file('image')->store('uploads', 'custom');
@@ -127,19 +131,27 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         if (Gate::denies('update-product')) {
-            return abort(403, 'Don\'t have Permission');
+            return response()->json(['message' => 'Don\'t have Permission'], 403);
         }
-        $request->validate([
+
+        $validatore = Validator($request->all(), [
             'name_en' => 'required',
             'name_ar' => 'required',
             'price' => 'required|numeric',
             'description_en' => 'required',
             'description_ar' => 'required',
             'quantity' => 'required|integer',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'is_featured' => 'nullable|boolean',
+            'image' => 'nullable|image|max:2048',
+            'gallery.*' => 'nullable|image|max:2048',
         ]);
 
-        // $data = $request->except('_token', 'image', 'gallery');
+        if ($validatore->fails()) {
+            return response()->json([
+                'message' => $validatore->errors()->first()
+            ], 422);
+        }
 
         $name = [
             'en' => $request->name_en,
@@ -157,19 +169,23 @@ class ProductController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'category_id' => $request->category_id,
+            'is_featured' => $request->input('is_featured', 0)
         ]);
+
         if ($request->hasFile('image')) {
             if ($product->image) {
                 File::delete('storage/' . $product->image->path);
+                $product->image()->delete();
             }
-            $product->image()->delete();
+
             $path = $request->file('image')->store('uploads', 'custom');
             $product->image()->create([
                 'path' => $path,
             ]);
         }
-        if ($request->has('gallery')) {
-            foreach ($request->gallery as $img) {
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $img) {
                 $path = $img->store('uploads', 'custom');
                 $product->image()->create([
                     'path' => $path,
@@ -177,8 +193,14 @@ class ProductController extends Controller
                 ]);
             }
         }
-        flash()->info('Product updated successfully!');
-        return redirect()->route('admin.products.index', ['page' => $request->page]);
+
+        return response()->json([
+            'message' => 'Product updated successfully!'
+        ], 200);
+
+
+        // flash()->info('Product updated successfully!');
+        // return redirect()->route('admin.products.index', ['page' => $request->page]);
     }
 
     /**

@@ -22,26 +22,27 @@
                     <div class="right-content">
                         <div class="row">
                             @foreach ($categories as $category)
-                            <div class="col-lg-6">
-                                <div class="right-first-image">
-                                    <div class="thumb">
-                                        <div class="inner-content">
-                                            <h4>{{ $category->trans_name }}</h4>
-                                            <span>{{ $category->trans_description }}</span>
-                                        </div>
-                                        <div class="hover-content">
-                                            <div class="inner">
+                                <div class="col-lg-6">
+                                    <div class="right-first-image">
+                                        <div class="thumb">
+                                            <div class="inner-content">
                                                 <h4>{{ $category->trans_name }}</h4>
-                                                <p>{{ $category->trans_description }}</p>
-                                                <div class="main-border-button">
-                                                    <a href="{{ route('site.category', $category->slug) }}">Discover More</a>
+                                                <span>{{ $category->trans_description }}</span>
+                                            </div>
+                                            <div class="hover-content">
+                                                <div class="inner">
+                                                    <h4>{{ $category->trans_name }}</h4>
+                                                    <p>{{ $category->trans_description }}</p>
+                                                    <div class="main-border-button">
+                                                        <a href="{{ route('site.category', $category->slug) }}">Discover
+                                                            More</a>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <img src="{{ asset('storage/' . $category->image->path) }}">
                                         </div>
-                                        <img src="{{ asset('storage/'.$category->image->path) }}">
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -69,16 +70,36 @@
                         <div class="men-item-carousel">
                             <div class="owl-men-item owl-carousel">
                                 @foreach ($category->products as $product)
-
-                                @include('website.parts.item')
-
+                                    @include('website.parts.item')
                                 @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    @endforeach
+
+                @if ($productView->isNotEmpty())
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-heading">
+                                <h2>Recently Viewed</h2>
+                            </div>
+                            <div class="men-item-carousel">
+                                <div class="owl-men-item owl-carousel">
+                                    @foreach ($productView as $view)
+                                        @if ($view->product)
+                                            @include('website.parts.item', ['product' => $view->product])
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+        </div>
+
+        </div>
+    </section>
+@endforeach
 
 </x-layout>

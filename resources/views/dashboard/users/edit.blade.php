@@ -7,7 +7,10 @@
         <h1 class="h3 text-gray-800">Edit User</h1>
 
         @can('users')
-        <a href="{{ route('admin.users.index') }}" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> All Users</a>
+        <div class="" id="btn">
+        <a href="{{ route('admin.users.index') }}"><i class="fas fa-long-arrow-alt-left"></i> All Users</a>
+
+        </div>
         @endcan
 
     </div>

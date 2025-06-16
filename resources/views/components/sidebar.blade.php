@@ -6,7 +6,7 @@
             <div class="sidebar-brand-icon">
                 <i class="fas fa-store"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">{{ env('APP_NAME') }}</div>
+            <div class="sidebar-brand-text mx-3">{{ config('app.name') ?? "Gaza Store" }}</div>
         </a>
 
         <!-- Divider -->

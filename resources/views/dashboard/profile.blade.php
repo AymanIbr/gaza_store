@@ -71,9 +71,12 @@
                         <img title="Edit your photo" id="prevImg" class="im-thumbnail prev-img"
                             src="{{ $url }}" alt="">
                         <br>
-                        <label class="btn btn-sm btn-dark mt-2" for="image">
-                            Edit Image
-                        </label>
+                        <span class="" id="btn">
+                            <label style="color: white; cursor: pointer;" class="mt-3" for="image">
+                                Edit Image
+                            </label>
+                        </span>
+
                     </div>
                     <div class="d-none">
                         <x-form.file onchange="showImage(event)" name="image" accept=".png, .jpg, .jpeg, .svg" />
@@ -151,24 +154,24 @@
             //     });
             // };
 
-            $('#current_password').blur(function(){
-            // $('#current_password').keyup(function(){
+            $('#current_password').blur(function() {
+                // $('#current_password').keyup(function(){
                 $.ajax({
-                    url: '{{ route("admin.check_password") }}',
+                    url: '{{ route('admin.check_password') }}',
                     type: 'post',
                     data: {
                         _token: '{{ csrf_token() }}',
                         password: $('#current_password').val()
                     },
                     success: function(res) {
-                        if(res){
+                        if (res) {
                             $('.new').prop('disabled', false)
                             $('#current_password').removeClass('is-invalid')
                             $('#current_password').addClass('is-valid')
-                        }else{
+                        } else {
                             $('.new').prop('disabled', true)
-                             $('.new').val('');
-                             $('#current_password').removeClass('is-valid')
+                            $('.new').val('');
+                            $('#current_password').removeClass('is-valid')
                             $('#current_password').addClass('is-invalid')
                         }
                     }

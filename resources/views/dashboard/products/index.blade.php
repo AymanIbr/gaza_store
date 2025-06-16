@@ -4,9 +4,11 @@
         <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Products {{ $products->total() }}</span>
         </h1>
         @can('create-product')
-            <a href="{{ route('admin.products.create') }}" class="btn btn-info">
-                <i class="fas fa-plus"></i> Add New
-            </a>
+            <div class="" id="btn">
+                <a href="{{ route('admin.products.create') }}">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </div>
         @endcan
     </div>
 
@@ -43,8 +45,10 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <img width="100px" height="100px" style="object-fit: cover"
-                                            class="img-thumbnail" src="{{ $product->image_path }}" alt="">
+                                        <a target="_blank" href="{{ $product->image_path }}">
+                                            <img width="100px" height="100px" style="object-fit: cover"
+                                                class="img-thumbnail" src="{{ $product->image_path }}" alt="">
+                                        </a>
                                     </td>
                                     <td>{{ $product->trans_name }}</td>
                                     <td>{{ $product->price }}</td>

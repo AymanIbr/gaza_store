@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\OrderMapController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WebSiteController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,7 @@ Route::prefix(LaravelLocalization::setLocale())->group(function () {
   Route::any('payments/paypal/callback', [PaymentController::class, 'callback'])->name('paypal.callback');
   Route::any('payments/paypal/cancel', [PaymentController::class, 'cancel'])->name('paypal.cancel');
 
+Route::post('/store-rating/{product:slug}', [ReviewController::class, 'store'])->name('rating.store');
 
 
   // map
@@ -67,6 +69,7 @@ Route::prefix(LaravelLocalization::setLocale())->group(function () {
   // test notification
   Route::get('/send', [NotificationController::class, 'send']);
 });
+
 
 
 // Magic Method

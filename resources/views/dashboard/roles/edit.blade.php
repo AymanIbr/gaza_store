@@ -6,7 +6,9 @@
 
         <h1 class="h3 text-gray-800">Edit Role</h1>
         @can('roles')
-        <a href="{{ route('admin.roles.index') }}" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> All Roles</a>
+        <div class="" id="btn">
+<a href="{{ route('admin.roles.index') }}"><i class="fas fa-long-arrow-alt-left"></i> All Roles</a>
+        </div>
         @endcan
 
     </div>

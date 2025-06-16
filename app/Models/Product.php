@@ -19,10 +19,15 @@ class Product extends Model
         ]);
     }
 
+    // public function variants()
+    // {
+    //     return $this->hasMany(Variant::class);
+    // }
+
     function image()
     {
         return $this->morphOne(Image::class, 'imageable')->withDefault([
-            'path' => 'uploads/'. 'no-image.png'
+            'path' => 'uploads/' . 'no-image.png'
         ])->where('type', 'main');
     }
 
@@ -31,9 +36,25 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable')->where('type', 'gallery');
     }
 
-    function reviews()
+
+    public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->where('status', 1)->avg('star');
+    }
+
+    public function approvedReviewsCount()
+    {
+        return $this->reviews()->where('status', 1)->count();
+    }
+
+    public function views()
+    {
+        return $this->hasMany(ProductView::class);
     }
 
     // function order_details()
@@ -45,19 +66,19 @@ class Product extends Model
     public function getImagePathAttribute()
     {
         $url = asset('assets/img/100x80.svg');
-        if($this->image){
-            $url = asset('storage/'.$this->image->path);
+        if ($this->image) {
+            $url = asset('storage/' . $this->image->path);
         }
         return $url;
     }
 
     static protected function booted()
     {
-        static::creating(function (Product $product){
+        static::creating(function (Product $product) {
             $product->slug = Str::slug($product->name);
         });
 
-        static::updating(function (Product $product){
+        static::updating(function (Product $product) {
             $product->slug = Str::slug($product->name);
         });
     }

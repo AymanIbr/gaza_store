@@ -27,8 +27,10 @@ class AdminController extends Controller
         $category_count = Category::count();
         $product_count = Product::count();
         $order_count = Order::count();
-        return view('dashboard.index',
-        compact('user_count','category_count','product_count','order_count'));
+        return view(
+            'dashboard.index',
+            compact('user_count', 'category_count', 'product_count', 'order_count')
+        );
     }
 
 
@@ -111,8 +113,14 @@ class AdminController extends Controller
                 'value' => $value
             ]);
         }
-        flash()->success('Settings saved successfully');
-        return redirect()->back();
+
+        Artisan::call('cache:clear');
+
+        return response()->json([
+            'message' => 'Settings saved successfully'
+        ], 200);
+        // flash()->success('Settings saved successfully');
+        // return redirect()->back();
     }
 
     function delete_logo()

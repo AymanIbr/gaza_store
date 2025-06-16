@@ -4,9 +4,11 @@
         <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Users</span>
         </h1>
         @can('create-user')
-            <a href="{{ route('admin.users.create') }}" class="btn btn-info">
+        <div id="btn" class="">
+            <a href="{{ route('admin.users.create') }}">
                 <i class="fas fa-plus"></i> Add New
             </a>
+        </div>
         @endcan
     </div>
 

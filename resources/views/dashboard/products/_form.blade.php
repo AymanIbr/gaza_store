@@ -85,6 +85,22 @@
             </div>
         </div>
 
+      <div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured"
+                    value="1"
+                    {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="is_featured">Featured Product</label>
+            </div>
+            @error('is_featured')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+</div>
+
     </div>
 
     <div class="col-md-3">

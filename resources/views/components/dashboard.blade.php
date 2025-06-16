@@ -73,6 +73,21 @@
             margin: 3px;
             cursor: pointer;
         }
+
+        #btn {
+            padding: 8px;
+            border-radius: 5px;
+            transition: .3s ease all;
+        }
+
+        #btn a {
+            color: white !important;
+            text-decoration: none
+        }
+
+        #btn:hover {
+            opacity: 0.8;
+        }
     </style>
 
     @if (app()->getLocale() == 'ar')
@@ -388,12 +403,17 @@
                 // console.log(cl);
                 document.querySelector("#sidebar_color").className = '';
                 document.querySelector("#sidebar_color").classList.add(cl);
+
+                document.querySelector("#btn").className = '';
+                document.querySelector("#btn").classList.add(cl);
+
                 localStorage.setItem('cl', cl)
             }
         });
 
         let oldclass = localStorage.getItem('cl') ?? 'bg-gradient-primary';
         document.querySelector("#sidebar_color").classList.add(oldclass);
+        document.querySelector("#btn").classList.add(oldclass);
     </script>
 
 
@@ -417,6 +437,9 @@
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
     @stack('js')
 

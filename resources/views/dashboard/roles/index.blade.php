@@ -4,9 +4,11 @@
         <h1 class="h3 mb-0 text-gray-800"><span class="count-category">All Roles {{ $roles->total() }}</span>
         </h1>
         @can('create-role')
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">
-                <i class="fas fa-plus"></i> Add New
-            </a>
+            <div class="" id="btn">
+                <a href="{{ route('admin.roles.create') }}">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </div>
         @endcan
     </div>
 
